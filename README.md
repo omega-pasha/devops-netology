@@ -100,3 +100,29 @@ bdfea50cc - James Bardin j.bardin@gmail.com Mon Nov 30 18:02:04 2020 -0500
 5ac311e2a - Martin Atkins mart@degeneration.co.uk Wed May 3 16:25:41 2017 -0700
 
 Создал Martin Atkins Wed May 3 16:25:41 2017
+
+
+## Задание "3.3. Операционные системы, лекция 1"
+
+1. strace -e file /bin/bash -c 'cd /tmp' Отформатировал по обращениям к файлам, увидел в самом конце chdir("/tmp"), видимо это и есть системный вызов cd
+
+2. strace -e trace=openat file /dev/sda Отформатировал по открытию файлов, единственной не библиотекой бый файл magic.mgc. Сперва find её ищет её в /etc 
+    openat(AT_FDCWD, "/etc/magic.mgc", O_RDONLY) = -1 ENOENT (No such file or directory)
+Но не находит и ищет в  
+    openat(AT_FDCWD, "/usr/share/misc/magic.mgc", O_RDONLY) = 3
+
+3.  ping localhost > ping.log &
+    
+    lsof -p 1119313 (ping    1119313 pomortsev    1w   REG  253,1    26281 3699871 /home/pomortsev/ping.log (deleted))
+
+    cat /proc/1119313/fd/1 > ./ping.log
+
+4. Зомби не занимают памяти (как процессы-сироты), но блокируют записи в таблице процессов, размер которой ограничен для каждого пользователя и системы в целом.
+
+5. 
+
+
+
+
+
+
