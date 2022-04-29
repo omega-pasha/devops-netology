@@ -119,10 +119,24 @@ bdfea50cc - James Bardin j.bardin@gmail.com Mon Nov 30 18:02:04 2020 -0500
 
 4. Зомби не занимают памяти (как процессы-сироты), но блокируют записи в таблице процессов, размер которой ограничен для каждого пользователя и системы в целом.
 
-5. 
+5. PID    COMM               FD ERR PATH
+766    vminfo              6   0 /var/run/utmp
+562    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+562    dbus-daemon        18   0 /usr/share/dbus-1/system-services
+562    dbus-daemon        -1   2 /lib/dbus-1/system-services
+562    dbus-daemon        18   0 /var/lib/snapd/dbus-1/system-services/
 
+6.  strace uname -a (uname({sysname="Linux", nodename="IT-POMOR-UBU", ...}) = 0). 
+    man 2 uname ( Part of the utsname information is also accessible via /proc/sys/kernel/{ostype, hostname, osrelease, version, domainname}.)
 
+7.  ; - команды выполнятся последовательно одна за другой (test -d /tmp/some_dir; echo Hi) первая команда ничего нв выведет, а вторая напишет Hi
+    && - условие, если первая команда выполнена успешно, то выполняется следующая. 
+    Из help set (-e  Exit immediately if a command exits with a non-zero status.) Поэтому применять && вместе с set -e не имеет смысла, поскольку и так операция прервется
 
+8. e - Выйти немедленно, если команда завершается с ненулевым статусом
+   u - Рассматривать незаданные переменные как ошибку при замене
+   x - Печатать команды и их аргументы по мере их выполнения
+   o pipefail - возвращаемое значение конвейера — это статус последней команды для выхода с ненулевым статусом или ноль, если ни одна команда не вышла с ненулевым статусом
+   set -euxo pipefail можно применять в качестве логирования работы отдельных функций скрипта. Завершить выполнение скрипта, если отдельная фукция завершилась с ошибкой.
 
-
-
+9. ps ax -o stat | sort -n Чаще всего значение STAT - S (Прерываемый сон, ожидание завершения события) с различными доп. характеристиками (S< (высокоприоритетный), Sl(многопоточный) , Ss(Лидер сеанса), Ssl многопоточный лидер сеанса)   
