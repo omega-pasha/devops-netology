@@ -116,7 +116,18 @@ bdfea50cc - James Bardin j.bardin@gmail.com Mon Nov 30 18:02:04 2020 -0500
     lsof -p 1119313 (ping    1119313 pomortsev    1w   REG  253,1    26281 3699871 /home/pomortsev/ping.log (deleted))
 
     cat /proc/1119313/fd/1 > ./ping.log
-
+    
+    ### Доработка
+    Получилось только когда зашел под рутом
+    ``` su root
+        ping 8.8.8.8 >> ping.log &
+        rm ping.log
+        lsof -p 11511
+        ping    11511 root    1w   REG  253,1    31119 3670210 /home/pomortsev/ping.log (deleted)
+        > /proc/11511/fd/1
+        lsof -p 11511
+        ping    11511 root    1w   REG  253,1      228 3670210 /home/pomortsev/ping.log (deleted)
+    ```
 4. Зомби не занимают памяти (как процессы-сироты), но блокируют записи в таблице процессов, размер которой ограничен для каждого пользователя и системы в целом.
 
 5. PID    COMM               FD ERR PATH
