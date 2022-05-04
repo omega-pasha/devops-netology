@@ -151,3 +151,29 @@ bdfea50cc - James Bardin j.bardin@gmail.com Mon Nov 30 18:02:04 2020 -0500
    set -euxo pipefail можно применять в качестве логирования работы отдельных функций скрипта. Завершить выполнение скрипта, если отдельная фукция завершилась с ошибкой.
 
 9. ps ax -o stat | sort -n Чаще всего значение STAT - S (Прерываемый сон, ожидание завершения события) с различными доп. характеристиками (S< (высокоприоритетный), Sl(многопоточный) , Ss(Лидер сеанса), Ssl многопоточный лидер сеанса)   
+
+
+## Задание  "3.4. Операционные системы, лекция 2"
+
+1. * wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+   * tar -zxvf node_exporter-1.3.1.linux-amd64.tar.gz
+   * cd node_exporter-1.3.1.linux-amd64
+   * sudo cp node_exporter /usr/local/bin
+   * sudo useradd --no-create-home --shell /bin/false node_exporter
+   * sudo vim /etc/systemd/system/node_exporter.service
+```[Unit]
+Description=Prometheus Node Exporter
+Wants=network-online.target
+After=network-online.target
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+[Install]
+WantedBy=multi-user.target
+```
+   * sudo systemctl daemon-reload
+   * sudo systemctl enable --now node_exporter
+   * https://disk.yandex.ru/i/VtnUZQGpfIv7Qg
+
