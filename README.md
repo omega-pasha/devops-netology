@@ -161,19 +161,102 @@ bdfea50cc - James Bardin j.bardin@gmail.com Mon Nov 30 18:02:04 2020 -0500
    * sudo cp node_exporter /usr/local/bin
    * sudo useradd --no-create-home --shell /bin/false node_exporter
    * sudo vim /etc/systemd/system/node_exporter.service
-```[Unit]
-Description=Prometheus Node Exporter
-Wants=network-online.target
-After=network-online.target
-[Service]
-User=node_exporter
-Group=node_exporter
-Type=simple
-ExecStart=/usr/local/bin/node_exporter
-[Install]
-WantedBy=multi-user.target
-```
+    ```[Unit]
+    Description=Prometheus Node Exporter
+    Wants=network-online.target
+    After=network-online.target
+    [Service]
+    User=node_exporter
+    Group=node_exporter
+    Type=simple
+    ExecStart=/usr/local/bin/node_exporter
+    [Install]
+    WantedBy=multi-user.target
+    ```
    * sudo systemctl daemon-reload
    * sudo systemctl enable --now node_exporter
    * https://disk.yandex.ru/i/VtnUZQGpfIv7Qg
+Добавляем опции:
+   * vim /etc/systemd/system/node_exporter.service
+   ```
+   EnvironmentFile=/etc/default/node_exporter
+   ExecStart=/usr/local/bin/node_exporter $ARGS
+   ```
+   * vim /etc/default/node_exporter
+   ```
+   ARGS=--web.listen-address=localhost:9101
+   ```
+   * https://disk.yandex.ru/i/mYpYyYla4U9efg
+
+2. Процессор:
+```
+# HELP node_cpu_seconds_total Seconds the CPUs spent in each mode.
+# TYPE node_cpu_seconds_total counter
+node_cpu_seconds_total{cpu="0",mode="idle"} 587.9
+node_cpu_seconds_total{cpu="0",mode="iowait"} 10.09
+node_cpu_seconds_total{cpu="0",mode="irq"} 0
+node_cpu_seconds_total{cpu="0",mode="nice"} 1.56
+node_cpu_seconds_total{cpu="0",mode="softirq"} 1.38
+node_cpu_seconds_total{cpu="0",mode="steal"} 0
+node_cpu_seconds_total{cpu="0",mode="system"} 29.49
+node_cpu_seconds_total{cpu="0",mode="user"} 85.36
+node_cpu_seconds_total{cpu="1",mode="idle"} 593.21
+node_cpu_seconds_total{cpu="1",mode="iowait"} 8.28
+node_cpu_seconds_total{cpu="1",mode="irq"} 0
+node_cpu_seconds_total{cpu="1",mode="nice"} 2.96
+node_cpu_seconds_total{cpu="1",mode="softirq"} 0.74
+node_cpu_seconds_total{cpu="1",mode="steal"} 0
+node_cpu_seconds_total{cpu="1",mode="system"} 29.86
+node_cpu_seconds_total{cpu="1",mode="user"} 82.87
+node_cpu_seconds_total{cpu="2",mode="idle"} 595.99
+node_cpu_seconds_total{cpu="2",mode="iowait"} 6.72
+node_cpu_seconds_total{cpu="2",mode="irq"} 0
+node_cpu_seconds_total{cpu="2",mode="nice"} 1.07
+node_cpu_seconds_total{cpu="2",mode="softirq"} 0.38
+node_cpu_seconds_total{cpu="2",mode="steal"} 0
+node_cpu_seconds_total{cpu="2",mode="system"} 32.88
+node_cpu_seconds_total{cpu="2",mode="user"} 76.54
+node_cpu_seconds_total{cpu="3",mode="idle"} 586.57
+node_cpu_seconds_total{cpu="3",mode="iowait"} 6.85
+node_cpu_seconds_total{cpu="3",mode="irq"} 0
+node_cpu_seconds_total{cpu="3",mode="nice"} 2.37
+node_cpu_seconds_total{cpu="3",mode="softirq"} 0.06
+node_cpu_seconds_total{cpu="3",mode="steal"} 0
+node_cpu_seconds_total{cpu="3",mode="system"} 28.54
+node_cpu_seconds_total{cpu="3",mode="user"} 93.03
+```
+Память:
+```
+# HELP node_memory_MemAvailable_bytes Memory information field MemAvailable_bytes.
+# TYPE node_memory_MemAvailable_bytes gauge
+node_memory_MemAvailable_bytes 1.17837824e+10
+# HELP node_memory_MemFree_bytes Memory information field MemFree_bytes.
+# TYPE node_memory_MemFree_bytes gauge
+node_memory_MemFree_bytes 7.717900288e+09
+# HELP node_memory_MemTotal_bytes Memory information field MemTotal_bytes.
+# TYPE node_memory_MemTotal_bytes gauge
+node_memory_MemTotal_bytes 1.6711028736e+10
+```
+Диск:
+```
+node_disk_io_time_seconds_total{device="sda"} 70.08
+node_disk_read_time_seconds_total{device="sda"} 91.98700000000001
+node_disk_write_time_seconds_total{device="sda"} 58.635
+```
+Сеть:
+```
+node_network_receive_bytes_total{device="eno1"} 2.3929992e+07
+node_network_receive_packets_total{device="eno1"} 36283
+node_network_receive_drop_total{device="eno1"} 24
+node_network_transmit_bytes_total{device="eno1"} 4.235203e+06
+node_network_transmit_drop_total{device="eno1"} 0
+node_network_transmit_packets_total{device="eno1"} 24274
+node_network_up{device="docker0"} 1
+node_network_up{device="dockernet"} 0
+node_network_up{device="eno1"} 1
+node_network_up{device="lo"} 0
+node_network_up{device="ppp0"} 0
+node_network_up{device="tun0"} 0
+node_network_up{device="tun1"} 0
+```
 
