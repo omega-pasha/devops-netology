@@ -259,4 +259,33 @@ node_network_up{device="ppp0"} 0
 node_network_up{device="tun0"} 0
 node_network_up{device="tun1"} 0
 ```
+3. apt install -y netdata
+
+netstat -tulpn
+
+vim /etc/netdata/netdata.conf
+```
+[global]
+        run as user = netdata
+        web files owner = root
+        web files group = root
+        # Netdata is not designed to be exposed to potentially hostile
+        # networks. See https://github.com/netdata/netdata/issues/164
+        #bind socket to IP = 127.0.0.1
+        bind socket to IP = 0.0.0.0
+```
+lsof -i :19999
+```
+netdata 21129 netdata    5u  IPv4 100041      0t0  TCP *:19999 (LISTEN)
+```
+У меня нет vagrant, крутится виртуалка с ubuntu, подключаюсь по IP - https://disk.yandex.ru/i/7OXsN4wkmcE23A
+
+4. dmesg | grep virt
+
+[3.810381] systemd[1]: Detected virtualization kvm.
+
+5. sysctl fs.nr_open (fs.nr_open = 1048576) Ограничение максимального числа открытых дескрипторов для ядра. ulimit -Hn (1048576)
+- Жесткое ограничение максимального числа открытых дескрипторов
+
+
 
