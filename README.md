@@ -305,3 +305,195 @@ root 14 0.0 0.0 11704 3416 pts/7 R+ 20:10 0:00 ps aux
 
 7. :(){ :|:& };: это форк-бомба, фукция bash которая вызывает себя же рекурсивно. Которая, похоже, создаёт их пока не дойдет до ограничения максимального числа открытых дескрипторов для пользователя.
 А порядок навёл модуль ядра fork rejected by pids controller
+
+## Задание "3.5. Файловые системы"
+
+1. dd if=/dev/zero of=file-sparse bs=1 count=0 seek=2G
+du -h --apparent-size file-sparse
+```
+2,0G	file-sparse 
+```
+2. Поскольку inode у жестких ссылок одинаковый, поэтому у всех объектов будут одинаковые права.
+
+touch test
+
+ln test test_link
+
+ls -ilh | grep test
+```
+ 3711434 -rw-rw-r--  2 pomortsev pomortsev    0 мая 11 15:06 test
+ 3711434 -rw-rw-r--  2 pomortsev pomortsev    0 мая 11 15:06 test_link
+```
+ln test test_link2
+chmod 766 test_link2
+```
+ 3711434 -rwxrw-rw-  3 pomortsev pomortsev    0 мая 11 15:06 test
+ 3711434 -rwxrw-rw-  3 pomortsev pomortsev    0 мая 11 15:06 test_link
+ 3711434 -rwxrw-rw-  3 pomortsev pomortsev    0 мая 11 15:06 test_link2
+```
+chmod 664 test_link
+```
+ 3711434 -rw-rw-r--  3 pomortsev pomortsev    0 мая 11 15:06 test
+ 3711434 -rw-rw-r--  3 pomortsev pomortsev    0 мая 11 15:06 test_link
+ 3711434 -rw-rw-r--  3 pomortsev pomortsev    0 мая 11 15:06 test_link2
+```
+
+3. Сделал на своей виртуалке (не Vagrant) 
+```
+sda                   8:0    0   200G  0 disk 
+├─sda1                8:1    0     1M  0 part 
+├─sda2                8:2    0   513M  0 part /boot/efi
+└─sda3                8:3    0 199,5G  0 part 
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm  /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm  [SWAP]
+sdb                   8:16   0     2G  0 disk 
+sdc                   8:32   0     2G  0 disk 
+sr0                  11:0    1  1024M  0 rom  
+```
+4. sudo fdisk /dev/sdb
+```
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): 
+
+Using default response p.
+Partition number (1-4, default 1): 
+First sector (2048-4194303, default 2048): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-4194303, default 4194303): +1536M
+
+Created a new partition 1 of type 'Linux' and of size 1,5 GiB.
+```
+```
+Command (m for help): n
+Partition type
+   p   primary (1 primary, 0 extended, 3 free)
+   e   extended (container for logical partitions)
+Select (default p): 
+
+Using default response p.
+Partition number (2-4, default 2): 
+First sector (3147776-4194303, default 3147776): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (3147776-4194303, default 4194303): 
+
+Created a new partition 2 of type 'Linux' and of size 511 MiB.
+
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+```
+```
+sda                   8:0    0   200G  0 disk 
+├─sda1                8:1    0     1M  0 part 
+├─sda2                8:2    0   513M  0 part /boot/efi
+└─sda3                8:3    0 199,5G  0 part 
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm  /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm  [SWAP]
+sdb                   8:16   0     2G  0 disk 
+├─sdb1                8:17   0   1,5G  0 part 
+└─sdb2                8:18   0   511M  0 part 
+sdc                   8:32   0     2G  0 disk 
+sr0                  11:0    1  1024M  0 rom  
+```
+5. sudo sgdisk -R /dev/sdc /dev/sdb
+```
+sda                   8:0    0   200G  0 disk 
+├─sda1                8:1    0     1M  0 part 
+├─sda2                8:2    0   513M  0 part /boot/efi
+└─sda3                8:3    0 199,5G  0 part 
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm  /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm  [SWAP]
+sdb                   8:16   0     2G  0 disk 
+├─sdb1                8:17   0   1,5G  0 part 
+└─sdb2                8:18   0   512M  0 part 
+sdc                   8:32   0     2G  0 disk 
+├─sdc1                8:33   0   1,5G  0 part 
+└─sdc2                8:34   0   512M  0 part 
+```
+6. sudo mdadm --create --verbose /dev/md0 -l 1 -n 2 /dev/sd{b1,c1}
+```
+sda                   8:0    0   200G  0 disk  
+├─sda1                8:1    0     1M  0 part  
+├─sda2                8:2    0   513M  0 part  /boot/efi
+└─sda3                8:3    0 199,5G  0 part  
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm   /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm   [SWAP]
+sdb                   8:16   0     2G  0 disk  
+├─sdb1                8:17   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+└─sdb2                8:18   0   512M  0 part  
+sdc                   8:32   0     2G  0 disk  
+├─sdc1                8:33   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+└─sdc2                8:34   0   512M  0 part  
+sr0                  11:0    1  1024M  0 rom  
+```
+7. sudo mdadm --create --verbose /dev/md1 -l 0 -n 2 /dev/sd{b2,c2}
+```
+sda                   8:0    0   200G  0 disk  
+├─sda1                8:1    0     1M  0 part  
+├─sda2                8:2    0   513M  0 part  /boot/efi
+└─sda3                8:3    0 199,5G  0 part  
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm   /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm   [SWAP]
+sdb                   8:16   0     2G  0 disk  
+├─sdb1                8:17   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+└─sdb2                8:18   0   512M  0 part  
+  └─md1               9:1    0  1019M  0 raid0 
+sdc                   8:32   0     2G  0 disk  
+├─sdc1                8:33   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+└─sdc2                8:34   0   512M  0 part  
+  └─md1               9:1    0  1019M  0 raid0 
+sr0                  11:0    1  1024M  0 rom 
+```
+8. pvcreate /dev/sdb /dev/sdc
+```
+  Physical volume "/dev/md0" successfully created.
+  Physical volume "/dev/md1" successfully created.
+```
+9. sudo vgcreate vg01 /dev/md0 /dev/md1
+```
+  --- Volume group ---
+  VG Name               vg01
+  System ID             
+  Format                lvm2
+  Metadata Areas        2
+  Metadata Sequence No  1
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                0
+  Open LV               0
+  Max PV                0
+  Cur PV                2
+  Act PV                2
+  VG Size               <2,49 GiB
+  PE Size               4,00 MiB
+  Total PE              637
+  Alloc PE / Size       0 / 0   
+  Free  PE / Size       637 / <2,49 GiB
+  VG UUID               P7gYkn-EVns-cdQE-Mlz8-2yE6-3W3q-sgoAUP
+```
+10. sudo lvcreate -L 100M vg01 /dev/md0
+```
+  --- Logical volume ---
+  LV Path                /dev/vg01/lvol0
+  LV Name                lvol0
+  VG Name                vg01
+  LV UUID                zo6keg-Goq6-A5Yc-1l0G-cArR-DRUX-e2uY7p
+  LV Write Access        read/write
+  LV Creation host, time pomor-test-ubu, 2022-05-11 16:22:52 +0700
+  LV Status              available
+  # open                 0
+  LV Size                100,00 MiB
+  Current LE             25
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           253:2
+```
