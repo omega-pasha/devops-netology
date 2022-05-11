@@ -497,3 +497,95 @@ sr0                  11:0    1  1024M  0 rom
   - currently set to     256
   Block device           253:2
 ```
+11. sudo mkfs.ext4 /dev/vg01/lvol0 
+12. sudo mount /dev/vg01/lvol0 /tmp/new/
+```
+/dev/mapper/vg01-lvol0      90M   24K   83M   1% /tmp/new
+```
+13. ls -lh /tmp/new/
+total 23M
+drwx------ 2 root root 16K мая 11 16:45 lost+found
+-rw-r--r-- 1 root root 22M мая 11 15:58 test.gz
+14. lsblk
+```
+sda                   8:0    0   200G  0 disk  
+├─sda1                8:1    0     1M  0 part  
+├─sda2                8:2    0   513M  0 part  /boot/efi
+└─sda3                8:3    0 199,5G  0 part  
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm   /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm   [SWAP]
+sdb                   8:16   0     2G  0 disk  
+├─sdb1                8:17   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+│   └─vg01-lvol0    253:2    0   100M  0 lvm   /tmp/new
+└─sdb2                8:18   0   512M  0 part  
+  └─md1               9:1    0  1019M  0 raid0 
+sdc                   8:32   0     2G  0 disk  
+├─sdc1                8:33   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+│   └─vg01-lvol0    253:2    0   100M  0 lvm   /tmp/new
+└─sdc2                8:34   0   512M  0 part  
+  └─md1               9:1    0  1019M  0 raid0 
+sr0                  11:0    1  1024M  0 rom  
+```
+15. gzip -t ./test.gz && echo $?
+
+0
+16. sudo pvmove /dev/md0
+```
+sda                   8:0    0   200G  0 disk  
+├─sda1                8:1    0     1M  0 part  
+├─sda2                8:2    0   513M  0 part  /boot/efi
+└─sda3                8:3    0 199,5G  0 part  
+  ├─vgubuntu-root   253:0    0 198,5G  0 lvm   /
+  └─vgubuntu-swap_1 253:1    0   976M  0 lvm   [SWAP]
+sdb                   8:16   0     2G  0 disk  
+├─sdb1                8:17   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+└─sdb2                8:18   0   512M  0 part  
+  └─md1               9:1    0  1019M  0 raid0 
+    └─vg01-lvol0    253:2    0   100M  0 lvm   /tmp/new
+sdc                   8:32   0     2G  0 disk  
+├─sdc1                8:33   0   1,5G  0 part  
+│ └─md0               9:0    0   1,5G  0 raid1 
+└─sdc2                8:34   0   512M  0 part  
+  └─md1               9:1    0  1019M  0 raid0 
+    └─vg01-lvol0    253:2    0   100M  0 lvm   /tmp/new
+sr0                  11:0    1  1024M  0 rom 
+```                                   
+17. Запутался в физических томах. Но бысто понял свою ошибку. Переместил PV обратно на RAID1, чтобы данные не потерялись
+sudo mdadm /dev/md0 --fail /dev/sdb1
+
+sudo mdadm -D /dev/md0
+```
+/dev/md0:
+           Version : 1.2
+     Creation Time : Wed May 11 16:06:38 2022
+        Raid Level : raid1
+        Array Size : 1569792 (1533.00 MiB 1607.47 MB)
+     Used Dev Size : 1569792 (1533.00 MiB 1607.47 MB)
+      Raid Devices : 2
+     Total Devices : 2
+       Persistence : Superblock is persistent
+
+       Update Time : Wed May 11 17:47:12 2022
+             State : clean, degraded 
+    Active Devices : 1
+   Working Devices : 1
+    Failed Devices : 1
+     Spare Devices : 0
+
+Consistency Policy : resync
+
+              Name : pomor-test-ubu:0  (local to host pomor-test-ubu)
+              UUID : 9cc66808:27d419ab:473aff5e:4a4c33e7
+            Events : 19
+
+    Number   Major   Minor   RaidDevice State
+       -       0        0        0      removed
+       1       8       33        1      active sync   /dev/sdc1
+
+       0       8       17        -      faulty   /dev/sdb1
+```
+18. gzip -t /tmp/new/test.gz && echo $?
+0
