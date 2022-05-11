@@ -587,5 +587,10 @@ Consistency Policy : resync
 
        0       8       17        -      faulty   /dev/sdb1
 ```
-18. gzip -t /tmp/new/test.gz && echo $?
+
+18. md/raid1:md0: Disk failure on sdb1, disabling device.
+md/raid1:md0: Operation continuing on 1 devices.
+
+                                    
+19. gzip -t /tmp/new/test.gz && echo $?
 0
