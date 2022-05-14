@@ -594,3 +594,142 @@ md/raid1:md0: Operation continuing on 1 devices.
                                     
 19. gzip -t /tmp/new/test.gz && echo $?
 0
+
+## Задание "3.6. Компьютерные сети, лекция 1"
+              
+1. 
+```
+HTTP/1.1 301 Moved Permanently
+cache-control: no-cache, no-store, must-revalidate
+location: https://stackoverflow.com/questions
+x-request-guid: 940be52c-c7e9-4746-8542-5d68cfcc6e18
+feature-policy: microphone 'none'; speaker 'none'
+content-security-policy: upgrade-insecure-requests; frame-ancestors 'self' https://stackexchange.com
+Accept-Ranges: bytes
+Date: Sat, 14 May 2022 08:38:51 GMT
+Via: 1.1 varnish
+Connection: close
+X-Served-By: cache-ams21063-AMS
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Timer: S1652517532.803121,VS0,VE75
+Vary: Fastly-SSL
+X-DNS-Prefetch-Control: off
+Set-Cookie: prov=480af295-e98c-e443-efc8-1bfa197bc958; domain=.stackoverflow.com; expires=Fri, 01-Jan-2055 00:00:00 GMT; path=/; HttpOnly
+```
+301 - сервер перенаправил запрос на HTTPS (Защищённый)
+
+2. 
+```
+Request URL: http://stackoverflow.com/
+Request Method: GET
+Status Code: 301 Moved Permanently
+Remote Address: 151.101.193.69:80
+Referrer Policy: strict-origin-when-cross-origin
+```
+Дольше всего грузилась - https://stackoverflow.com/
+https://disk.yandex.ru/i/W8T7XmyTXVJ8ng
+                
+3. узнал через сервис https://2ip.ru/
+4. 
+```
+route:          90.189.220.0/24
+descr:          Rostelecom networks
+origin:         AS12389
+```
+
+5.
+```
+ 4  ws.90.189.224.1.nsk.sibirtelecom.ru (90.189.224.1)  8.497 ms  8.471 ms  7.961 ms
+ 5  213.228.109.140 (213.228.109.140)  8.348 ms
+    213.228.109.148 (213.228.109.148)  8.048 ms
+    213.228.109.140 (213.228.109.140)  10.364 ms
+ 6  213.228.109.70 (213.228.109.70)  9.605 ms
+    213.228.109.74 (213.228.109.74)  26.550 ms  9.709 ms
+ 7  185.140.148.155 (185.140.148.155)  48.764 ms
+    185.140.148.153 (185.140.148.153)  59.976 ms
+    185.140.148.155 (185.140.148.155)  51.164 ms
+ 8  72.14.205.132 (72.14.205.132)  51.808 ms  50.510 ms  52.293 ms
+ 9  * * *
+10  108.170.250.33 (108.170.250.33)  60.164 ms
+    66.249.95.40 (66.249.95.40)  48.853 ms  49.375 ms
+11  108.170.250.34 (108.170.250.34)  49.180 ms
+    108.170.250.66 (108.170.250.66)  51.100 ms
+    108.170.250.113 (108.170.250.113)  69.204 ms
+12  142.250.238.214 (142.250.238.214)  67.753 ms
+    72.14.234.20 (72.14.234.20)  63.066 ms *
+13  216.239.48.224 (216.239.48.224)  74.168 ms
+    72.14.235.69 (72.14.235.69)  84.477 ms
+    142.250.233.0 (142.250.233.0)  68.654 ms
+14  209.85.251.63 (209.85.251.63)  63.996 ms
+    142.250.56.125 (142.250.56.125)  68.468 ms
+    172.253.51.241 (172.253.51.241)  67.681 ms
+15  * * *
+16  * * *
+17  * * *
+18  * * *
+19  * * *
+20  * * *
+21  * * *
+22  * * *
+23  * * *
+24  dns.google (8.8.8.8)  62.399 ms  64.559 ms  60.035 ms
+```                                   
+6.
+```
+2. AS31200  37.194.226.254                                     0.0%    86    1.4   5.7   0.7  29.7   6.4
+ 3. AS???    10.245.138.241                                     0.0%    86    0.9   1.1   0.8  10.4   1.1
+ 4. AS???    10.245.138.242                                     0.0%    86    1.3   1.8   1.0  12.8   1.9
+ 5. AS31200  178.49.128.2                                       0.0%    86    5.8   2.8   1.2  21.0   4.0
+ 6. AS9049   188.234.131.158                                    0.0%    86   43.0  43.5  42.7  63.0   2.5
+ 7. AS15169  72.14.214.138                                      0.0%    86   42.8  42.8  42.6  43.9   0.2
+ 8. AS15169  74.125.244.129                                     0.0%    86   43.7  43.7  43.5  44.4   0.2
+ 9. AS15169  74.125.244.133                                     0.0%    86   42.7  43.3  42.5  67.4   2.8
+10. AS15169  72.14.232.84                                       0.0%    86   43.0  46.4  42.8 210.3  19.0
+11. AS15169  142.251.61.219                                     0.0%    86   48.0  47.0  46.4  50.7   0.6
+12. AS15169  216.239.56.101                                     0.0%    86   46.1  46.2  46.0  51.2   0.6
+13. (waiting for reply)
+14. (waiting for reply)
+15. (waiting for reply)
+16. (waiting for reply)
+17. (waiting for reply)
+18. (waiting for reply)
+19. (waiting for reply)
+20. (waiting for reply)
+21. (waiting for reply)
+22. AS15169  8.8.8.8                                            0.0%    85   46.0  45.9  45.9  46.4   0.1
+```
+7.
+```
+; <<>> DiG 9.16.1-Ubuntu <<>> dns.google
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 24325
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;dns.google.			IN	A
+
+;; ANSWER SECTION:
+dns.google.		22	IN	A	8.8.8.8
+dns.google.		22	IN	A	8.8.4.4
+
+;; Query time: 51 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Сб мая 14 16:37:57 +07 2022
+;; MSG SIZE  rcvd: 71                                   
+```     
+8. dig -x 8.8.8.8
+```
+;; ANSWER SECTION:
+8.8.8.8.in-addr.arpa.	1615	IN	PTR	dns.google.
+```
+ dig -x 8.8.4.4
+ ```
+;; ANSWER SECTION:
+4.4.8.8.in-addr.arpa.	17888	IN	PTR	dns.google.
+```
+   
+   
