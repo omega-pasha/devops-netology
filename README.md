@@ -732,4 +732,29 @@ dns.google.		22	IN	A	8.8.4.4
 4.4.8.8.in-addr.arpa.	17888	IN	PTR	dns.google.
 ```
    
-   
+## Задание 3.7. Компьютерные сети, лекция 2
+1. Linux - ifconfig, ip a. Windows - ipconfig
+2. Протокол lldp. 
+lldpcli 
+```
+[lldpcli] $ show neighbors
+-------------------------------------------------------------------------------
+LLDP neighbors:
+-------------------------------------------------------------------------------
+
+Interface:    eno1, via: LLDP, RID: 2, Time: 0 day, 00:00:50
+  Chassis:     
+    ChassisID:    mac 50:c7:bf:60:7f:3a
+    SysName:      T2600G-52TS
+    SysDescr:     JetStream 48-Port Gigabit L2 Managed Switch with 4 SFP Slots
+    MgmtIP:       192.168.
+    Capability:   Bridge, on
+    Capability:   Router, on
+  Port:        
+    PortID:       ifname GigabitEthernet1/0/39
+    PortDescr:    GigabitEthernet1/0/39 Interface
+    TTL:          120
+-------------------------------------------------------------------------------
+    
+ 3. Технология VLAN используется для разделения L2 коммутатора на несколько виртуальных сетей. Стандарт IEEE 802.1q
+    
