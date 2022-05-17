@@ -755,13 +755,13 @@ Interface:    eno1, via: LLDP, RID: 2, Time: 0 day, 00:00:50
     PortDescr:    GigabitEthernet1/0/39 Interface
     TTL:          120
 -------------------------------------------------------------------------------
+```    
+3. Технология VLAN используется для разделения L2 коммутатора на несколько виртуальных сетей. Стандарт IEEE 802.1q
     
- 3. Технология VLAN используется для разделения L2 коммутатора на несколько виртуальных сетей. Стандарт IEEE 802.1q
-    
-    modprobe 8021q - укстановка модуля ядра, для vlan
-    
-    vim /etc/netplan/01-network-manager.yaml
-    ```
+modprobe 8021q - укстановка модуля ядра, для vlan
+  
+vim /etc/netplan/01-network-manager.yaml
+```
     1 network:
     2   version: 2
     3   renderer: NetworkManager
@@ -779,8 +779,8 @@ Interface:    eno1, via: LLDP, RID: 2, Time: 0 day, 00:00:50
    15         link: eno1
    16         addresses:
    17          - 192.168.40.205/24
-   ```
-   ```
+```
+```
    ping 192.168.40.205
   SEQ HOST                                     SIZE TTL TIME  STATUS             
     0 192.168.40.205                             56  64 0ms  
@@ -793,12 +793,12 @@ Interface:    eno1, via: LLDP, RID: 2, Time: 0 day, 00:00:50
     7 192.168.40.205                             56  64 0ms  
     8 192.168.40.205                             56  64 0ms  
     9 192.168.40.205                             56  64 0ms  
-   ```
+```
 4.  sudo apt install ifenslave
     
-    sudo modprobe bonding
-    
-    ```
+sudo modprobe bonding
+  
+```
         1 network:
     2   renderer: NetworkManager
     3   ethernets:
@@ -818,7 +818,7 @@ Interface:    eno1, via: LLDP, RID: 2, Time: 0 day, 00:00:50
                 mii-monitor-interval: 1
    19         nameservers:
    20           addresses: [192.168.39.3, 192.168.39.7]
-   ```
+```
 5. в сети с маской /29, 6 ip адресов
     
    Из сети с маской /24 получится 32 подсети с маской /29
@@ -833,13 +833,11 @@ HostMin:   10.10.10.1            00001010.00001010.00001010.00000 001
 HostMax:   10.10.10.6            00001010.00001010.00001010.00000 110
 Hosts/Net: 6                     (Private Internet)
 
-
 Network:   10.10.10.8/29         00001010.00001010.00001010.00001 000 (Class A)
 Broadcast: 10.10.10.15           00001010.00001010.00001010.00001 111
 HostMin:   10.10.10.9            00001010.00001010.00001010.00001 001
 HostMax:   10.10.10.14           00001010.00001010.00001010.00001 110
 Hosts/Net: 6                     (Private Internet)
-
 
 Network:   10.10.10.16/29        00001010.00001010.00001010.00010 000 (Class A)
 Broadcast: 10.10.10.23           00001010.00001010.00001010.00010 111
@@ -848,6 +846,7 @@ HostMax:   10.10.10.22           00001010.00001010.00001010.00010 110
 Hosts/Net: 6                     (Private Internet)
 ```
 6. можно взять подсеть  100.64.0.0/26
+    
 ```
 ipcalc 100.64.0.0/26
 Address:   100.64.0.0           01100100.01000000.00000000.00 000000
