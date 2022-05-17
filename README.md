@@ -758,3 +758,45 @@ Interface:    eno1, via: LLDP, RID: 2, Time: 0 day, 00:00:50
     
  3. Технология VLAN используется для разделения L2 коммутатора на несколько виртуальных сетей. Стандарт IEEE 802.1q
     
+    modprobe 8021q - укстановка модуля ядра, для vlan
+    
+    vim /etc/netplan/01-network-manager.yaml
+    ```
+    1 network:
+    2   version: 2
+    3   renderer: NetworkManager
+    4   ethernets:
+    5      eno1:
+    6          dhcp4: no
+    7          addresses:
+    8          - 192.168.39.105/24
+    9          gateway4: 192.168.39.1
+   10          nameservers:
+   11              addresses: [192.168.39.3, 192.168.39.7]
+   12   vlans:
+   13      vlan40:
+   14         id: 3
+   15         link: eno1
+   16         addresses:
+   17          - 192.168.40.205/24
+   ```
+   ```
+   ping 192.168.40.205
+  SEQ HOST                                     SIZE TTL TIME  STATUS             
+    0 192.168.40.205                             56  64 0ms  
+    1 192.168.40.205                             56  64 0ms  
+    2 192.168.40.205                             56  64 0ms  
+    3 192.168.40.205                             56  64 0ms  
+    4 192.168.40.205                             56  64 0ms  
+    5 192.168.40.205                             56  64 0ms  
+    6 192.168.40.205                             56  64 0ms  
+    7 192.168.40.205                             56  64 0ms  
+    8 192.168.40.205                             56  64 0ms  
+    9 192.168.40.205                             56  64 0ms  
+   ```
+4.  sudo apt install ifenslave
+    
+    sudo modprobe bonding
+    
+    
+    
