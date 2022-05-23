@@ -863,3 +863,72 @@ Hosts/Net: 62                    Class A
    
 Windows: Просмотр - arp -a, отчистка - netsh interface ip delete arpcache, удаление определенного адреса -  arp -d <ip>
     
+
+## Задание Компьютерные сети (лекция 3
+
+1. Routing entry for 185.158.155.0/24
+  Known via "bgp 6447", distance 20, metric 10
+  Tag 3257, type external
+  Last update from 89.149.178.10 7w0d ago
+  Routing Descriptor Blocks:
+  * 89.149.178.10, from 89.149.178.10, 7w0d ago
+      Route metric is 10, traffic share count is 1
+      AS Hops 3
+      Route tag 3257
+      MPLS label: none
+2. ip link add name dummy0 type dummy
+```
+3: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether ae:a3:d1:3d:6a:ca brd ff:ff:ff:ff:ff:ff
+```
+touch /etc/systemd/network/dummy0.netdev
+```
+[NetDev]
+Name=dummy0
+Kind=dummy
+```    
+touch /etc/systemd/network/dummy0.network
+```
+[Match]
+Name=dummy0
+[Network]
+Address=192.168.0.100
+Mask=255.255.255.0
+```
+systemctl restart systemd-networkd
+```
+3. dummy0: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether ae:a3:d1:3d:6a:ca brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.100/24 brd 192.168.0.255 scope global dummy0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::aca3:d1ff:fe3d:6aca/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+ip route add 10.11.0.0/16 via 10.11.2.245
+```
+10.11.0.0/16 via 10.11.2.245 dev tun1
+```
+4. sudo ss -tlpn
+```
+State    Recv-Q    Send-Q    Local Address:Port     Peer Address:Port    Process                                                                                                                           
+LISTEN     0       4096      0.0.0.0:10050            0.0.0.0:*          users:(("zabbix_agentd",pid=1145,fd=4),("zabbix_agentd",pid=1144,fd=4))
+LISTEN     0       5         0.0.0.0:902              0.0.0.0:*          users:(("vmware-authdlau",pid=551317,fd=11))
+LISTEN     0       4096      127.0.0.1:9101           0.0.0.0:*          users:(("node_exporter",pid=1316,fd=3))                                           
+LISTEN     0       4096      127.0.0.53%lo:53         0.0.0.0:*          users:(("systemd-resolve",pid=942,fd=13))                           
+LISTEN     0       128       0.0.0.0:22               0.0.0.0:*          users:(("sshd",pid=1140,fd=3))                                                     LISTEN     0       4096      [::]:10050               [::]:*             users:(("zabbix_agentd",pid=1145,fd=5))
+LISTEN     0       5         [::]:902                 [::]:*             users:(("vmware-authdlau",pid=551317,fd=10)) 
+LISTEN     0       128       [::]:22                  [::]:*             users:(("sshd",pid=1140,fd=4))                
+```
+5. sudo ss -ulpn
+```
+UNCONN     0       0         0.0.0.0:39631            0.0.0.0:*          users:(("openvpn",pid=1320,fd=4))                                   
+UNCONN     0       0         172.19.0.1:56331         0.0.0.0:*          users:(("chrome",pid=660133,fd=229))                                
+UNCONN     0       0         10.11.2.246:48225        0.0.0.0:*          users:(("systemd-resolve",pid=942,fd=12))                               
+UNCONN     0       0         0.0.0.0:58742            0.0.0.0:*          users:(("openvpn",pid=1318,fd=5))                                   
+UNCONN     0       0         0.0.0.0:1701             0.0.0.0:*          users:(("xl2tpd",pid=1426,fd=3))                                    
+```
+6. https://disk.yandex.ru/i/WonIdOFopDR8bw
+
+                                                                                          
+                                                                                                                                                                                               
+
