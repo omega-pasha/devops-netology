@@ -929,6 +929,109 @@ UNCONN     0       0         0.0.0.0:1701             0.0.0.0:*          users:(
 ```
 6. https://disk.yandex.ru/i/WonIdOFopDR8bw
 
-                                                                                          
-                                                                                                                                                                                               
+## Задание 3.9. Элементы безопасности информационных систем
+ 
+1. https://disk.yandex.ru/i/3_PPjrDObxrtfw
+ 
+2. https://disk.yandex.ru/i/xUZ_tQe3uW3pJA
+ 
+3. apt install apache2
+
+ufw allow 'Apache'
+    
+mkdir /var/www/test
+ 
+vim /var/www/test/index.html
+```
+ <html>
+    <head>
+        <title>Its done for homework</title>
+    </head>
+    <body>
+        <h1>Success! The  virtual host is working!</h1>
+    </body>
+</html>
+```
+vim /etc/apache2/sites-available/test.conf    
+```
+<VirtualHost *:80>
+        ServerName www.test.its-sib.ru
+        Redirect "/" "https://test.its-sib.ru/"
+</VirtualHost>
+<IfModule mod_ssl.c>
+    <VirtualHost _default_:443>
+        ServerName test.its-sib.ru
+        ServerAdmin ppe@its-sib.ru
+        DocumentRoot /var/www/test/
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        SSLEngine on
+        SSLCertificateFile      /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
+        BrowserMatch "MSIE [2-6]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+    </VirtualHost>
+</IfModule>
+```
+a2ensite test.conf
+
+apache2ctl configtest
+    
+systemctl restart apache2
+    
+https://disk.yandex.ru/i/F6lBgTeZ0I88bQ
+    
+https://disk.yandex.ru/i/qbWVNI1s4wa2kA
+    
+4. https://disk.yandex.ru/i/8UqIwN9atrbRXA
+ 
+5. ssh-keygen 
+```
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/pomortsev/.ssh/id_rsa): ubuntutest         
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in ubuntutest
+Your public key has been saved in ubuntutest.pub
+The key fingerprint is:
+SHA256:rH1+qUmwBJsb+mFYB8lBqvUL0fg1wo8WUZnc77u3A9E pomortsev@IT-POMOR-UBU
+The key's randomart image is:
++---[RSA 3072]----+
+|     .+o.+       |
+|     * ++ .      |
+|    = X o  . .   |
+|   o + % .  o E  |
+|  . . X S  . .   |
+|     * O o  o    |
+|    o * o o  +   |
+|     o . + .+ o  |
+|      .   +o.o.o |
++----[SHA256]-----+
+```
+cat ~/.ssh/ubuntutest.pub | ssh -i ~/.ssh/pomortsev root@192.168.39.213 "mkdir -p ~/.ssh && cat >> /root/.ssh/authorized_keys"
+ 
+ssh -i ~/.ssh/ubuntutest root@192.168.39.213
+```
+Welcome to Ubuntu 22.04 LTS (GNU/Linux 5.15.0-33-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 updates can be applied immediately.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+Last login: Tue May 24 14:10:24 2022 from 192.168.39.105
+```
+
+
+    
 
