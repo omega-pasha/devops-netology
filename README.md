@@ -1032,6 +1032,25 @@ Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your 
 Last login: Tue May 24 14:10:24 2022 from 192.168.39.105
 ```
 
+6. vim ~/.ssh/config
+```
+Host ubutest
+    HostName 192.168.39.213
+    User root
+    IdentityFile ~/.ssh/ubuntutest
+```
+ssh ubutest 
+```
+Welcome to Ubuntu 22.04 LTS (GNU/Linux 5.15.0-33-generic x86_64)
 
-    
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
 
+0 updates can be applied immediately.
+
+Last login: Wed May 25 10:11:15 2022 from 192.168.39.105
+```
+tcpdump -i eno1 -c 100 -w dump.pcap
+
+https://disk.yandex.ru/i/_4Q_pDbf4nHKNw
