@@ -1051,6 +1051,6 @@ Welcome to Ubuntu 22.04 LTS (GNU/Linux 5.15.0-33-generic x86_64)
 
 Last login: Wed May 25 10:11:15 2022 from 192.168.39.105
 ```
-tcpdump -i eno1 -c 100 -w dump.pcap
+7. tcpdump -i eno1 -c 100 -w dump.pcap
 
 https://disk.yandex.ru/i/_4Q_pDbf4nHKNw
