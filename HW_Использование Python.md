@@ -106,12 +106,58 @@ It is no repository path
 
 ### Ваш скрипт:
 ```python
-???
+import socket
+import time
+
+hosts_name = {'drive.google.com':'0.0.0.0', 'mail.google.com':'0.0.0.0', 'google.com':'0.0.0.0'}
+
+while 1==1:
+    for host in hosts_name:
+        old_ip = hosts_name[host]
+        new_ip = socket.gethostbyname(host)
+        if old_ip == new_ip:
+            print(host + "-" + old_ip)
+        else:
+            hosts_name[host] = new_ip
+            print(f"[ERROR] {host} IP mismatch: {old_ip} {new_ip}")
+    time.sleep(5)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+[ERROR] drive.google.com IP mismatch: 0.0.0.0 74.125.131.194
+[ERROR] mail.google.com IP mismatch: 0.0.0.0 142.250.150.18
+[ERROR] google.com IP mismatch: 0.0.0.0 64.233.165.101
+drive.google.com-74.125.131.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.18 142.250.150.83
+[ERROR] google.com IP mismatch: 64.233.165.101 64.233.165.139
+drive.google.com-74.125.131.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.83 142.250.150.17
+[ERROR] google.com IP mismatch: 64.233.165.139 64.233.165.113
+drive.google.com-74.125.131.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.17 142.250.150.19
+[ERROR] google.com IP mismatch: 64.233.165.113 64.233.165.138
+drive.google.com-74.125.131.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.19 142.250.150.17
+[ERROR] google.com IP mismatch: 64.233.165.138 64.233.165.139
+drive.google.com-74.125.131.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.17 142.250.150.19
+[ERROR] google.com IP mismatch: 64.233.165.139 64.233.165.113
+drive.google.com-74.125.131.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.19 142.250.150.83
+[ERROR] google.com IP mismatch: 64.233.165.113 64.233.165.100
+[ERROR] drive.google.com IP mismatch: 74.125.131.194 173.194.222.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.83 142.250.150.19
+[ERROR] google.com IP mismatch: 64.233.165.100 64.233.165.101
+drive.google.com-173.194.222.194
+mail.google.com-142.250.150.19
+google.com-64.233.165.101
+drive.google.com-173.194.222.194
+mail.google.com-142.250.150.19
+[ERROR] google.com IP mismatch: 64.233.165.101 64.233.165.139
+drive.google.com-173.194.222.194
+[ERROR] mail.google.com IP mismatch: 142.250.150.19 142.250.150.18
+[ERROR] google.com IP mismatch: 64.233.165.139 64.233.165.100
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
