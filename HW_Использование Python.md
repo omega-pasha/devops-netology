@@ -43,12 +43,30 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+import os
+
+path_repo = "~/netology/devops-netology" # Путь до репозитория в переменную
+bash_command = [f"cd {path_repo}", "git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+#is_change = False "Бесполезная строка, далее переменная не используется"
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = result.replace('\tmodified:   ', '')
+
+        print(path_repo + "/" +  prepare_result) # Вывод полного пути до измененного файла
+       # break "Цикл прерывается после первого вхождения"
 ```
 
-### Вывод скрипта при запуске при тестировании:
+### Вывод скрипта при первом запуске 
 ```
-???
+pomortsev@IT-POMOR-UBU:~/scripts$ /usr/bin/python3 /home/pomortsev/scripts/learning.py
+index.php
+```
+###  Вывод скрипта при повторном запуске
+```
+pomortsev@IT-POMOR-UBU:~/scripts$ /usr/bin/python3 /home/pomortsev/scripts/learning.py
+~/netology/devops-netology/index.php
+~/netology/devops-netology/second.php
 ```
 
 ## Обязательная задача 3
