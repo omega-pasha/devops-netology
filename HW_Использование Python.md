@@ -74,12 +74,31 @@ pomortsev@IT-POMOR-UBU:~/scripts$ /usr/bin/python3 /home/pomortsev/scripts/learn
 
 ### Ваш скрипт:
 ```python
-???
+import os
+
+path_repo = input("Input path to repository: ") # Путь до репозитория вводит пользователь
+
+if os.path.exists(f"{path_repo}/.git"): # Проверка, существует ли папка .git
+    bash_command = [f"cd {path_repo}", "git status"]
+    result_os = os.popen(' && '.join(bash_command)).read()
+    for result in result_os.split('\n'):
+
+        if result.find('modified') != -1:
+            prepare_result = result.replace('\tmodified:   ', '')
+            print(path_repo + prepare_result) # Вывод полного пути до измененного файла
+else:
+    print("It is no repository path")
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+pomortsev@IT-POMOR-UBU:~/scripts$ /usr/bin/python3 /home/pomortsev/scripts/learning.py
+Input path to repository: /home/pomortsev/netology/devops-netology/
+/home/pomortsev/netology/devops-netology/index.php
+/home/pomortsev/netology/devops-netology/second.php
+pomortsev@IT-POMOR-UBU:~/scripts$ /usr/bin/python3 /home/pomortsev/scripts/learning.py
+Input path to repository: /home/pomortsev/netology/                
+It is no repository path
 ```
 
 ## Обязательная задача 4
