@@ -27,7 +27,7 @@
 ```
 { "info": "Sample JSON output from our service\t",
     "elements": [
-        { "name": "first", "type": "server", "ip": 7175},
+        { "name": "first", "type": "server", "ip": 7175 """Это не ip а просто число"""},
         { "name": "second","type": "proxy", "ip": "71.78.22.43"}
     ]
 }
@@ -38,24 +38,65 @@
 
 ### Ваш скрипт:
 ```python
-???
+import socket
+import time
+import json
+import yaml
+
+with open('1.json', 'r') as js:
+    hosts_name = json.load(js)
+    
+while True:
+    for host in hosts_name:
+        old_ip = hosts_name[host]
+        new_ip = socket.gethostbyname(host)
+        if old_ip != new_ip:
+            hosts_name[host] = new_ip
+            with open('1.json', 'w') as js:
+                js.write(json.dumps(hosts_name, indent=4))
+            with open('2.yaml', 'w') as yml:
+                yml.write(yaml.dump(hosts_name, explicit_start=True))
+    time.sleep(10)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+Он ничего не выводит, все читает и пишет в файлах
 ```
 
 ### json-файл(ы), который(е) записал ваш скрипт:
+#### Первый запуск
 ```json
-???
+{
+    "drive.google.com": "142.251.1.194",
+    "mail.google.com": "64.233.162.19",
+    "google.com": "74.125.131.101"
+}
+```
+#### Второй запуск
+```
+{
+    "drive.google.com": "173.194.221.194",
+    "mail.google.com": "74.125.205.19",
+    "google.com": "74.125.131.139"
+}
 ```
 
 ### yml-файл(ы), который(е) записал ваш скрипт:
+#### Первый запуск
 ```yaml
-???
+---
+drive.google.com: 142.251.1.194
+google.com: 74.125.131.101
+mail.google.com: 64.233.162.19
 ```
-
+#### Второй запуск
+```
+---
+drive.google.com: 173.194.221.194
+google.com: 74.125.131.139
+mail.google.com: 74.125.205.19
+```
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
 
 Так как команды в нашей компании никак не могут прийти к единому мнению о том, какой формат разметки данных использовать: JSON или YAML, нам нужно реализовать парсер из одного формата в другой. Он должен уметь:
